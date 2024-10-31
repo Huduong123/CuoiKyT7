@@ -1,0 +1,13 @@
+com\example\usecase\AddTransaction\AddTransactionInput.class
+com\example\database\Test\DatabaseMemory.class
+com\example\usecase\AddTransaction\AddTransactionInputDTO.class
+com\example\usecase\ResponseError.class
+com\example\ui\TransactionAppMain.class
+com\example\entity\RealEstate.class
+com\example\ui\TransactionFormView.class
+com\example\usecase\AddTransaction\AddTransactionOutput.class
+com\example\entity\House.class
+com\example\entity\Land.class
+com\example\usecase\AddTransaction\AddTransactionOutputDTO.class
+com\example\usecase\AddTransaction\AddtransactionDatabase.class
+com\example\usecase\AddTransaction\AddTransactionUsecase.class
