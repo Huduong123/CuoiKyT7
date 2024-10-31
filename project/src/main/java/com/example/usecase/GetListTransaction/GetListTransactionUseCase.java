@@ -38,6 +38,12 @@ public class GetListTransactionUseCase implements GetListTransactionInput {
                         land.thanhTien());
 
                 listOutputDTO.add(landDTO);
+                System.out.println("\nDanh sách giao dịch của bạn là:  \nMã giao dịch: " + land.getMaGiaoDich() 
+                + "\nNgày giao dịch: " + land.getNgayGiaoDich()
+                + "\nLoại giao dịch: " + land.getLoaiGiaoDich()
+                + "\nĐơn giá: " + land.getDonGia()
+                + "\nDiện tích: " + land.getDienTich()
+                + "\nThành tiền: " + land.thanhTien());
             } else {
                 House house = (House) realEstate;
 
@@ -52,6 +58,14 @@ public class GetListTransactionUseCase implements GetListTransactionInput {
                         house.thanhTien());
 
                 listOutputDTO.add(houseDTO);
+                System.out.println("\nDanh sách giao dịch của bạn là:  \nMã giao dịch: " + house.getMaGiaoDich() 
+                + "\nNgày giao dịch: " + house.getNgayGiaoDich()
+                + "\nLoại giao dịch: " + house.getLoaiGiaoDich()
+                + "\nĐơn giá: " + house.getDonGia()
+                + "\nDiện tích: " + house.getDienTich()
+                + "\nLoại nhà: " + house.getLoaiNha()
+                + "\nĐịa chỉ: " + house.getDiaChi()
+                + "\nThành tiền: " + house.thanhTien());
             }
 
             getListTransactionOutput.presenter(listOutputDTO);

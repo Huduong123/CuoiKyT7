@@ -74,7 +74,7 @@ public class AddTransactionTest {
         // Tạo đối tượng Date từ Calendar
         Date date1 = calendar1.getTime();
 
-        transaction1 = new AddTransactionInputDTO(130, date1, "Nhà", 100, 50, "Cao cấp", "23 Phan Huy Ích");
+        transaction1 = new AddTransactionInputDTO(5, date1, "Nhà", 100, 50, "Cao cấp", "23 Phan Huy Ích");
 
         return transaction1;
     }

@@ -28,6 +28,10 @@ import javax.swing.table.DefaultTableModel;
 import com.example.ui.add_transaction.AddTransactionController;
 import com.example.ui.add_transaction.AddTransactionDetailForm;
 import com.example.ui.add_transaction.AddTransactionViewModel;
+import com.example.ui.delete_transaction.DeleteTransactionController;
+import com.example.ui.delete_transaction.DeleteTransactionViewModel;
+import com.example.ui.edit_transaction.EditTransactionController;
+import com.example.ui.edit_transaction.EditTransactionViewModel;
 import com.example.ui.get_listTransaction.GetListTransactionController;
 import com.example.ui.get_listTransaction.GetListTransactionViewModel;
 
@@ -37,10 +41,10 @@ public class TransactionFormView extends JFrame implements ActionListener {
     private JComboBox<String> cboHouseType;
     private JTextField txtSearch;
     private JTextField txtTransactionCode, txtUnitPrice, txtArea, txtAddress, txtTransactionDate;
-    private JButton btnCalculate, btnAddTransaction, btnEditTransaction, btnDeleteTransaction, btnSumQuantity,
+    private JButton btnReset, btnAddTransaction, btnEditTransaction, btnDeleteTransaction, btnSumQuantity,
             btnAverage, btnPrint, btnSearch;
     private DefaultTableModel transactionTable;
-
+    private boolean isTableChanged = false; // Cờ để kiểm tra thay đổi dữ liệu bảng
 
     //view 
     private AddTransactionDetailForm addTransactionDetailForm = null;
@@ -49,12 +53,13 @@ public class TransactionFormView extends JFrame implements ActionListener {
     private List<GetListTransactionViewModel> transactions = null;
     private GetListTransactionViewModel viewModel = null;
     private AddTransactionViewModel addViewModel = null;
-
+    private EditTransactionViewModel editViewModel = null;
+    private DeleteTransactionViewModel deleteViewModel = null;
     // controller
     private GetListTransactionController getListTransactionController = null;
     private AddTransactionController addTransactionController = null;
-
-
+    private EditTransactionController editTransactionController = null;
+    private DeleteTransactionController deleteTransactionController = null;
 
     public void setAddTransactionDetailForm(AddTransactionDetailForm addTransactionDetailForm) {
         this.addTransactionDetailForm = addTransactionDetailForm;
@@ -91,10 +96,10 @@ public class TransactionFormView extends JFrame implements ActionListener {
         cboHouseType.setEnabled(false);
 
         btnSearch = new JButton("Tìm Kiếm");
-        btnCalculate = new JButton("Tạm Tính");
-        btnAddTransaction = new JButton("Thêm Hóa Đơn");
-        btnEditTransaction = new JButton("Sửa Hóa Đơn");
-        btnDeleteTransaction = new JButton("Xóa Hóa Đơn");
+        btnReset = new JButton("Reset");
+        btnAddTransaction = new JButton("Thêm Giao Dịch");
+        btnEditTransaction = new JButton("Sửa Giao Dịch");
+        btnDeleteTransaction = new JButton("Xóa Giao Dịch");
         btnSumQuantity = new JButton("Tính Tổng Số Lượng");
         btnAverage = new JButton("Tính Trung Bình");
         btnPrint = new JButton("In Giao Dịch");
@@ -174,24 +179,20 @@ public class TransactionFormView extends JFrame implements ActionListener {
         gbc.gridx = 1;
         add(cboHouseType, gbc);
 
-        // gbc.gridx = 0;
-        // gbc.gridy = 9;
-        // add(lblTotalPrice, gbc);
-        // gbc.gridx = 1;
-        // add(txtTotalPrice, gbc);
 
         gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.weightx = 0;
-        add(btnSearch, gbc);
         gbc.gridy = 2;
-        add(btnCalculate, gbc);
+        add(btnReset, gbc);
         gbc.gridy = 3;
         add(btnSumQuantity, gbc);
         gbc.gridy = 4;
         add(btnAverage, gbc);
         gbc.gridy = 5;
         add(btnPrint, gbc);
+        gbc.gridy = 6;
+        add(btnSearch, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 9;
@@ -204,6 +205,9 @@ public class TransactionFormView extends JFrame implements ActionListener {
         setVisible(true);
 
         /////////////////////////
+       //set Enabled
+        btnEditTransaction.setEnabled(false);
+        btnDeleteTransaction.setEnabled(false);
 
         btnPrint.addActionListener(new ActionListener() {
 
@@ -240,23 +244,63 @@ public class TransactionFormView extends JFrame implements ActionListener {
                 }
             }
         });
+        
+    
+        btnReset.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+             resetForm();
+             btnEditTransaction.setEnabled(false);
+             btnDeleteTransaction.setEnabled(false);
+            }
+            
+        });
 
         btnAddTransaction.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleAddStudent();
-                showErrorMessage();
+               handleAddTransaction();
+            
             }
 
         });
         txtAddress.setEnabled(false);
 
+        btnEditTransaction.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                    handleEditTransaction();
+                    txtTransactionCode.setEnabled(true);
+                 
+            }
+        });
+
+        btnDeleteTransaction.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+          
+                    handleDeleteTransaction();
+                    txtTransactionCode.setEnabled(true);
+                
+            }
+            
+        });
+
+
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
+
+
                 int selectedRow = table.getSelectedRow();
                 if (selectedRow != -1) {
+                    btnEditTransaction.setEnabled(true);
+                    btnDeleteTransaction.setEnabled(true);
+    
                     // Lấy dữ liệu từ hàng đã chọn
                     Object transactionCode = table.getValueAt(selectedRow, 0);
                     Object transactionDate = table.getValueAt(selectedRow, 1);
@@ -268,6 +312,7 @@ public class TransactionFormView extends JFrame implements ActionListener {
         
                     // Kiểm tra null trước khi gọi toString()
                     txtTransactionCode.setText(transactionCode != null ? transactionCode.toString() : "");
+                    txtTransactionCode.setEditable(false); // Vô hiệu hóa trường văn bản
                     txtTransactionDate.setText(transactionDate != null ? transactionDate.toString() : "");
                     txtUnitPrice.setText(unitPrice != null ? unitPrice.toString() : "");
                     txtArea.setText(area != null ? area.toString() : "");
@@ -288,8 +333,18 @@ public class TransactionFormView extends JFrame implements ActionListener {
                         setComboBoxHouseEnabled(true);
                         cboHouseType.setSelectedItem(landOrHouseType != null ? landOrHouseType.toString() : "");
                     }
+
+                }else {
+                    btnEditTransaction.setEnabled(false);
+                    btnDeleteTransaction.setEnabled(false);
                 }
             }
+        });
+
+        transactionTable.addTableModelListener(e -> {
+            isTableChanged = true;
+            btnEditTransaction.setEnabled(false);
+            btnDeleteTransaction.setEnabled(false);
         });
     }
 
@@ -335,7 +390,7 @@ public class TransactionFormView extends JFrame implements ActionListener {
 
     // kiem tra ngay
     public boolean isValidDate(String date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         format.setLenient(false);
         try {
             format.parse(date);
@@ -349,49 +404,14 @@ public class TransactionFormView extends JFrame implements ActionListener {
     }
 
     // sự kiên thêm 
-    private void handleAddStudent() {
+    private void handleAddTransaction() {
       
-
+        if (!validateInputFields()) return;
         String maGiaoDich = txtTransactionCode.getText().trim();
         String ngayGiaoDich = txtTransactionDate.getText().trim();
         String loaiGiaoDich = (String) cboTransactionType.getSelectedItem();
         String donGia = txtUnitPrice.getText().trim();
         String dienTich = txtArea.getText().trim();
- 
-        boolean hasError = false;
-
-        if (maGiaoDich.isEmpty()) {
-            txtTransactionCode.requestFocus();
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập Mã Giao Dịch.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            hasError = true;
-            // txtTransactionCode.setText("");
-        } else if (ngayGiaoDich.isEmpty()) {
-            txtTransactionDate.requestFocus();
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập Ngày Giao Dịch.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            hasError = true;
-            // txtTransactionDate.setText("");
-        } else if (donGia.isEmpty()) {
-            txtUnitPrice.requestFocus();
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập Đơn Giá.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            hasError = true;
-        } else if (!isNumeric(donGia)) {
-            txtUnitPrice.requestFocus();
-            JOptionPane.showMessageDialog(this, "Đơn Giá phải là số.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            hasError = true;
-        } else if (dienTich.isEmpty()) {
-            txtArea.requestFocus();
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập Diện Tích.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            hasError = true;
-        } else if (!isNumeric(dienTich)) {
-            txtArea.requestFocus();
-            JOptionPane.showMessageDialog(this, "Diện Tích phải là số.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            hasError = true;
-        }
-
-        if (hasError) {
-            
-            return;
-        }
 
         if (loaiGiaoDich.equals("Đất")) {
             String loaiDat = (String) cboLandType.getSelectedItem();
@@ -410,9 +430,75 @@ public class TransactionFormView extends JFrame implements ActionListener {
         }
 
         getListTransactionController.execute();
-      
+        showErrorMessageAdd();
         resetForm();
       
+    }
+
+
+    private void handleEditTransaction(){
+        if (!validateInputFields()) return;
+        String maGiaoDich = txtTransactionCode.getText().trim();
+        String ngayGiaoDich = txtTransactionDate.getText().trim();
+        String loaiGiaoDich = (String) cboTransactionType.getSelectedItem();
+        String donGia = txtUnitPrice.getText().trim();
+        String dienTich = txtArea.getText().trim();
+
+        if (loaiGiaoDich.equals("Đất")) {
+            String loaiDat = (String) cboLandType.getSelectedItem();
+            editTransactionController.editTransactionLand(maGiaoDich, ngayGiaoDich, loaiGiaoDich, donGia, dienTich,
+                    loaiDat);
+        } else if (loaiGiaoDich.equals("Nhà")) {
+            String loaiNha = (String) cboHouseType.getSelectedItem();
+            String diaChi = txtAddress.getText().trim();
+            if (diaChi.isEmpty()) {
+                txtAddress.requestFocus();
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập Địa Chỉ.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            editTransactionController.editTransactionHouse(maGiaoDich, ngayGiaoDich, loaiGiaoDich, donGia, dienTich,
+                    loaiNha, diaChi);
+        }
+
+        getListTransactionController.execute();
+        showErrorMessageEdit();
+        resetForm();
+    }
+
+    public void handleDeleteTransaction(){
+        String maGiaoDich = txtTransactionCode.getText().trim();
+        deleteTransactionController.getMaGiaoDich(maGiaoDich);
+    
+        getListTransactionController.execute();
+        showErrorMessageDelete();
+        resetForm();
+    }
+
+    private boolean validateInputFields() {
+        if (txtTransactionCode.getText().trim().isEmpty()) {
+            showError("Vui lòng nhập Mã Giao Dịch.", txtTransactionCode);
+            return false;
+        } else if (txtTransactionDate.getText().trim().isEmpty()) {
+            showError("Vui lòng nhập Ngày Giao Dịch.", txtTransactionDate);
+            return false;
+        } else if (!isValidDate(txtTransactionDate.getText().trim())) {
+            return false; // Lỗi đã được xử lý trong isValidDate()
+        } else if (txtUnitPrice.getText().trim().isEmpty() || !isNumeric(txtUnitPrice.getText().trim())) {
+            showError("Đơn Giá phải là số và không được bỏ trống.", txtUnitPrice);
+            return false;
+        } else if (txtArea.getText().trim().isEmpty() || !isNumeric(txtArea.getText().trim())) {
+            showError("Diện Tích phải là số và không được bỏ trống.", txtArea);
+            return false;
+        } else if (getSelectedTransactionType().equals("Nhà") && txtAddress.getText().trim().isEmpty()) {
+            showError("Vui lòng nhập Địa Chỉ cho giao dịch Nhà.", txtAddress);
+            return false;
+        }
+        return true;
+    }
+
+    private void showError(String message, JTextField field) {
+        JOptionPane.showMessageDialog(this, message, "Lỗi", JOptionPane.ERROR_MESSAGE);
+        field.requestFocus();
     }
 
     private void resetForm() {
@@ -421,6 +507,7 @@ public class TransactionFormView extends JFrame implements ActionListener {
         txtUnitPrice.setText("");
         txtAddress.setText("");
         txtArea.setText("");
+        txtTransactionCode.setEnabled(true);
     }
 
     @Override
@@ -445,21 +532,55 @@ public class TransactionFormView extends JFrame implements ActionListener {
     }
 
 
-   // phương thức báo lỗi
-    public void showErrorMessage() {
+   public void setEditTransactionController(EditTransactionController editTransactionController) {
+        this.editTransactionController = editTransactionController;
+    }
+
+    
+    public void setDeleteTransactionController(DeleteTransactionController deleteTransactionController) {
+    this.deleteTransactionController = deleteTransactionController;
+}
+
+    //set ViewModel
+    public void setAddViewModel(AddTransactionViewModel addViewModel) {
+        this.addViewModel = addViewModel;
+    }
+
+    public void setEditViewModel(EditTransactionViewModel editViewModel) {
+        this.editViewModel = editViewModel;
+    }
+
+    public void setDeleteViewModel(DeleteTransactionViewModel deleteViewModel) {
+        this.deleteViewModel = deleteViewModel;
+    }
+
+    // phương thức báo lỗi
+    public void showErrorMessageAdd() {
   
         String errorMessage = addViewModel.getMessageError();
         if (errorMessage != null) {
             JOptionPane.showMessageDialog(this, errorMessage, "Lỗi", JOptionPane.ERROR_MESSAGE);
             addViewModel.setMessageError(null); // Reset lỗi sau khi hiển thị
-        }
-
-        
+        }   
+    }
+    public void showErrorMessageEdit() {
+  
+        String errorMessage = editViewModel.getMessageError();
+        if (errorMessage != null) {
+            JOptionPane.showMessageDialog(this, errorMessage, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            editViewModel.setMessageError(null); // Reset lỗi sau khi hiển thị
+        }   
     }
 
-    public void setAddViewModel(AddTransactionViewModel addViewModel) {
-        this.addViewModel = addViewModel;
+    public void showErrorMessageDelete() {
+  
+        String errorMessage = deleteViewModel.getMessageError();
+        if (errorMessage != null) {
+            JOptionPane.showMessageDialog(this, errorMessage, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            deleteViewModel.setMessageError(null); // Reset lỗi sau khi hiển thị
+        }   
     }
+   
     private boolean isNumeric(String str) {
         if (str == null || str.isEmpty()) {
             return false;
@@ -471,4 +592,7 @@ public class TransactionFormView extends JFrame implements ActionListener {
         }
         return true;
     }
+
+ 
+    
 }

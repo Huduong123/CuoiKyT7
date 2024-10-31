@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.example.database.Main.EditTransactionDAOMySQL;
 import com.example.ui.edit_transaction.EditTransactionPresenter;
+import com.example.ui.edit_transaction.EditTransactionViewModel;
 import com.example.usecase.EditTransaction.EditTransactionInput;
 import com.example.usecase.EditTransaction.EditTransactionInputDTO;
 import com.example.usecase.EditTransaction.EditTransactionOutputDTO;
@@ -20,7 +21,8 @@ public class EditTransactionTest {
     @Test
     public void testEditTransactionHouse(){
         EditTransactionInput editTransactionInput = null;
-        EditTransactionPresenter presenter = new EditTransactionPresenter();
+        EditTransactionViewModel editTransactionViewModel = new EditTransactionViewModel();
+        EditTransactionPresenter presenter = new EditTransactionPresenter(editTransactionViewModel);
         EditTransactionDAOMySQL editTransactionDAOMySQL = new EditTransactionDAOMySQL();
         
         editTransactionInput = new EditTransactionUseCase(presenter, editTransactionDAOMySQL);
@@ -28,8 +30,28 @@ public class EditTransactionTest {
         editTransactionInput.editExecute(getMockTransactionHouse());
         EditTransactionOutputDTO editTransactionOutputDTO = presenter.getEditTransactionOutputDTO();
     
-        //test Mã giao dich
-        assertEquals(getMockTransactionHouse().getMaGiaoDich(), editTransactionOutputDTO.getMaGiaoDich());
+           // test Mã giao dich
+           assertEquals(getMockTransactionHouse().getMaGiaoDich(),editTransactionOutputDTO.getMaGiaoDich());
+
+           // test Ngày giao dich
+            Date expectedDate = getMockTransactionHouse().getNgayGiaoDich();
+            Date actualDate = editTransactionOutputDTO.getNgayGiaoDich();
+            assertEquals(expectedDate,actualDate);
+   
+            //Test loại giao dich
+            assertEquals(getMockTransactionHouse().getLoaiGiaoDich(),editTransactionOutputDTO.getLoaiGiaoDich());
+   
+           // test đon giá
+            assertEquals(getMockTransactionHouse().getDonGia(), editTransactionOutputDTO.getDonGia(), 0.0001);
+   
+           //Test diện tích
+           assertEquals(getMockTransactionHouse().getDienTich(),editTransactionOutputDTO.getDienTich(), 0.0001);
+   
+           // test loại nhà
+            assertEquals(getMockTransactionHouse().getLoaiNha(), editTransactionOutputDTO.getLoaiNha());
+   
+           // test địa chỉ
+           assertEquals(getMockTransactionHouse().getDiaChi(), editTransactionOutputDTO.getDiaChi());
         
     
     
@@ -51,9 +73,49 @@ public class EditTransactionTest {
         // Tạo đối tượng Date từ Calendar
         Date date1 = calendar1.getTime();
 
-        transaction1 = new EditTransactionInputDTO(130, date1, "Nhà", 100, 50, "Cao cấp", "23 Phan Huy Ích");
+        transaction1 = new EditTransactionInputDTO(6, date1, "Nhà", 150, 70, "Cao cấp", "23 Phan Huy Ích");
 
         return transaction1;
+    }
+
+    //test edit nhà
+    @Test
+    public void testEditTransactionLand(){
+        EditTransactionInput editTransactionInput = null;
+             EditTransactionViewModel editTransactionViewModel = new EditTransactionViewModel();
+        EditTransactionPresenter presenter = new EditTransactionPresenter(editTransactionViewModel);
+        EditTransactionDAOMySQL editTransactionDAOMySQL = new EditTransactionDAOMySQL();
+        
+        editTransactionInput = new EditTransactionUseCase(presenter, editTransactionDAOMySQL);
+
+        editTransactionInput.editExecute(getMockTransactionLand());
+        EditTransactionOutputDTO editTransactionOutputDTO = presenter.getEditTransactionOutputDTO();
+    
+         // test Mã giao dich
+         assertEquals(getMockTransactionLand().getMaGiaoDich(),editTransactionOutputDTO.getMaGiaoDich());
+
+        // test Ngày giao dich
+         Date expectedDate = getMockTransactionLand().getNgayGiaoDich();
+         Date actualDate = editTransactionOutputDTO.getNgayGiaoDich();
+         assertEquals(expectedDate,actualDate);
+
+         //Test loại giao dich
+         assertEquals(getMockTransactionLand().getLoaiGiaoDich(),editTransactionOutputDTO.getLoaiGiaoDich());
+
+        // test đon giá
+         assertEquals(getMockTransactionLand().getDonGia(), editTransactionOutputDTO.getDonGia(), 0.0001);
+
+        //Test diện tích
+        assertEquals(getMockTransactionLand().getDienTich(),editTransactionOutputDTO.getDienTich(), 0.0001);
+
+        // test loại nhà
+         assertEquals(getMockTransactionLand().getLoaiNha(), editTransactionOutputDTO.getLoaiNha());
+
+        // test địa chỉ
+        assertEquals(getMockTransactionLand().getDiaChi(), editTransactionOutputDTO.getDiaChi());
+        
+    
+    
     }
 
         private EditTransactionInputDTO getMockTransactionLand() {
@@ -72,7 +134,7 @@ public class EditTransactionTest {
         // Tạo đối tượng Date từ Calendar
         Date date1 = calendar1.getTime();
 
-        transaction2 = new EditTransactionInputDTO(140, date1, "Đất", 100, 50, "A");
+        transaction2 = new EditTransactionInputDTO(5, date1, "Đất", 100, 50, "A");
 
         return transaction2;
     }

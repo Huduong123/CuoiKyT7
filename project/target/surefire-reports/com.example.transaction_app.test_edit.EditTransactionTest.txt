@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.example.transaction_app.test_edit.EditTransactionTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.044 s <<< FAILURE! - in com.example.transaction_app.test_edit.EditTransactionTest
-testEditTransactionHouse(com.example.transaction_app.test_edit.EditTransactionTest)  Time elapsed: 0.017 s  <<< ERROR!
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.493 s <<< FAILURE! - in com.example.transaction_app.test_edit.EditTransactionTest
+testEditTransactionHouse(com.example.transaction_app.test_edit.EditTransactionTest)  Time elapsed: 0.469 s  <<< ERROR!
 java.lang.NullPointerException: Cannot invoke "com.example.usecase.EditTransaction.EditTransactionOutputDTO.getMaGiaoDich()" because "editTransactionOutputDTO" is null
-	at com.example.transaction_app.test_edit.EditTransactionTest.testEditTransactionHouse(EditTransactionTest.java:31)
+	at com.example.transaction_app.test_edit.EditTransactionTest.testEditTransactionHouse(EditTransactionTest.java:34)
 

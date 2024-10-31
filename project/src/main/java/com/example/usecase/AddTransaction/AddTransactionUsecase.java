@@ -73,7 +73,7 @@ public class AddTransactionUsecase implements AddTransactionInput {
                         System.out.println("Thêm thành công! Mã giao dịch: " + house.getMaGiaoDich() 
                         + "\nNgày giao dịch: " + house.getNgayGiaoDich()
                         + "\nLoại giao dịch: " + house.getLoaiGiaoDich()
-                        + "\nĐơn giá: " + house.getDienTich()
+                        + "\nĐơn giá: " + house.getDonGia()
                         + "\nDiện tích: " + house.getDienTich()
                         + "\nLoại nhà: " + house.getLoaiNha()
                         + "\nĐịa chỉ: " + house.getDiaChi()
@@ -87,7 +87,7 @@ public class AddTransactionUsecase implements AddTransactionInput {
                        System.out.println("Thêm thành công! Mã giao dịch: " + land.getMaGiaoDich() 
                        + "\nNgày giao dịch: " + land.getNgayGiaoDich()
                        + "\nLoại giao dịch: " + land.getLoaiGiaoDich()
-                       + "\nĐơn giá: " + land.getDienTich()
+                       + "\nĐơn giá: " + land.getDonGia()
                        + "\nDiện tích: " + land.getDienTich()
                        + "\nLoại nhà: " + land.getLoaiDat()
                        + "\nThành tiền: " + land.thanhTien());

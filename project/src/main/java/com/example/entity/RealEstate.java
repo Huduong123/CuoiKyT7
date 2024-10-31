@@ -17,6 +17,11 @@ public abstract  class RealEstate {
         this.dienTich = dienTich;
     }
 
+    
+
+
+
+
     public int getMaGiaoDich() {
         return maGiaoDich;
     }

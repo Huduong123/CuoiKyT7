@@ -1,5 +1,7 @@
 package com.example.ui.edit_transaction;
 
+import javax.swing.JOptionPane;
+
 import com.example.ui.TransactionFormView;
 import com.example.usecase.EditTransaction.EditTransactionOutput;
 import com.example.usecase.EditTransaction.EditTransactionOutputDTO;
@@ -11,28 +13,32 @@ public class EditTransactionPresenter implements  EditTransactionOutput{
     private ResponseError resError = null;
     private  ResponseData resData = null;
      private TransactionFormView formMain;
-
+    private EditTransactionViewModel editViewModel;
 
      
+    public EditTransactionPresenter(EditTransactionViewModel editViewModel) {
+        this.editViewModel = editViewModel;
+    }
+
     @Override
     public void presenter(EditTransactionOutputDTO editTransactionOutputDTO) {
         this.editTransactionOutputDTO = editTransactionOutputDTO;
-
+      
 
     }
     @Override
     public void outError(ResponseError error) {
        this.resError = error;
        String errorMessage = error.getMessage() + "\nLỗi: " + error.getStoreValue();
-      // addViewModel.setMessageError(errorMessage);
-       // JOptionPane.showMessageDialog(null,  errorMessage, "Lỗi", JOptionPane.ERROR_MESSAGE);
-
+       editViewModel.setMessageError(errorMessage);
+      
+  //JOptionPane.showMessageDialog(null,  errorMessage, "Lỗi", JOptionPane.ERROR_MESSAGE);
         System.err.println(errorMessage);
     }
     @Override
     public void outResult(ResponseData responseData) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'outResult'");
+     this.resData = responseData;
+     JOptionPane.showMessageDialog(null,responseData.getMessage(), "Thông báo", JOptionPane.INFORMATION_MESSAGE);
     }
 
 
@@ -46,6 +52,10 @@ public class EditTransactionPresenter implements  EditTransactionOutput{
 
     public ResponseError getResError() {
         return resError;
+    }
+
+    public ResponseData getResData() {
+        return resData;
     }
 
 

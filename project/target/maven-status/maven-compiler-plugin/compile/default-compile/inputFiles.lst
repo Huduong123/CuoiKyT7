@@ -27,7 +27,6 @@ D:\LearnJava\Test3\CuoiKyT7\project\src\main\java\com\example\usecase\EditTransa
 D:\LearnJava\Test3\CuoiKyT7\project\src\main\java\com\example\usecase\SearchTransaction\SearchTransactionUseCase.java
 D:\LearnJava\Test3\CuoiKyT7\project\src\main\java\com\example\ui\edit_transaction\EditTransactionViewModel.java
 D:\LearnJava\Test3\CuoiKyT7\project\src\main\java\com\example\database\Main\EditTransactionDAOMySQL.java
-D:\LearnJava\Test3\CuoiKyT7\project\src\main\java\com\example\usecase\DeleteTransaction\DeleteTransactionOutputDTO.java
 D:\LearnJava\Test3\CuoiKyT7\project\src\main\java\com\example\usecase\ResponseError.java
 D:\LearnJava\Test3\CuoiKyT7\project\src\main\java\com\example\ui\get_listTransaction\GetListTransactionController.java
 D:\LearnJava\Test3\CuoiKyT7\project\src\main\java\com\example\database\Test\DatabaseMemory.java

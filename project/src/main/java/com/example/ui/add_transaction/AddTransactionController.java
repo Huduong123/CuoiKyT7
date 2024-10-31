@@ -15,7 +15,7 @@ public class AddTransactionController {
 
     public void addTransactionLand(String maGiaoDich, String date, String loaiGiaoDich, String donGia, String dienTich, String loaiDat){
    
-      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
       AddTransactionInputDTO addTransactionInputDTO = null;
 
       try {
@@ -39,7 +39,7 @@ public class AddTransactionController {
 
     public void addTransactionHouse(String maGiaoDich, String date, String loaiGiaoDich, String donGia, String dienTich, String loaiNha, String diaChi){
 
-      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
       AddTransactionInputDTO addTransactionInputDTO = null;
 
       try {

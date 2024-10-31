@@ -48,6 +48,8 @@ public class GetListTransactionPresenter implements GetListTransactionOutput {
                     transactionDTO.getDiaChi(),
                     String.valueOf(transactionDTO.getThanhTien()));
             listViewModel.add(viewModel);
+
+          
         }
 
         // Pass the view model list to the form for displaying

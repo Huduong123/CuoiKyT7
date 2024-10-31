@@ -39,14 +39,8 @@ public class EditTransactionUseCase implements  EditTransactionInput{
 
         // Kiểm tra xem mã giao dịch đã tồn tại chưa
         if (editTransactionDatabase.existByMaGiaoDich(maGiaoDich)) {
-            resError.message = "Mã giao dich đã tồn tại !";
-            resError.setStoreValue(String.valueOf(editTransactionInputDTO.getMaGiaoDich()));
-            editTransactionOutput.outError(resError);
-          
-            return; 
-        }
-
-            
+      
+                
         Date ngayGiaoDich = editTransactionInputDTO.getNgayGiaoDich();
         String loaiGiaoDich = editTransactionInputDTO.getLoaiGiaoDich();
         double donGia = editTransactionInputDTO.getDonGia();
@@ -71,6 +65,8 @@ public class EditTransactionUseCase implements  EditTransactionInput{
             EditTransactionOutputDTO outputDTO;
             if (editTransaction instanceof House) {
                 House house = (House) editTransaction;
+
+               
                 outputDTO = new EditTransactionOutputDTO(house.getMaGiaoDich(), house.getNgayGiaoDich(),
                         house.getLoaiGiaoDich(), house.getDonGia(), house.getDienTich(),
                         house.getLoaiNha(),  house.getDiaChi(), house.thanhTien());
@@ -78,7 +74,7 @@ public class EditTransactionUseCase implements  EditTransactionInput{
                         System.out.println("Sửa thành công! Mã giao dịch: " + house.getMaGiaoDich() 
                         + "\nNgày giao dịch: " + house.getNgayGiaoDich()
                         + "\nLoại giao dịch: " + house.getLoaiGiaoDich()
-                        + "\nĐơn giá: " + house.getDienTich()
+                        + "\nĐơn giá: " + house.getDonGia()
                         + "\nDiện tích: " + house.getDienTich()
                         + "\nLoại nhà: " + house.getLoaiNha()
                         + "\nĐịa chỉ: " + house.getDiaChi()
@@ -92,7 +88,7 @@ public class EditTransactionUseCase implements  EditTransactionInput{
                        System.out.println("Sửa thành công! Mã giao dịch: " + land.getMaGiaoDich() 
                        + "\nNgày giao dịch: " + land.getNgayGiaoDich()
                        + "\nLoại giao dịch: " + land.getLoaiGiaoDich()
-                       + "\nĐơn giá: " + land.getDienTich()
+                       + "\nĐơn giá: " + land.getDonGia()
                        + "\nDiện tích: " + land.getDienTich()
                        + "\nLoại nhà: " + land.getLoaiDat()
                        + "\nThành tiền: " + land.thanhTien());
@@ -107,6 +103,10 @@ public class EditTransactionUseCase implements  EditTransactionInput{
             editTransactionOutput.outError(resError);
         }
     }
+       
+        }
+
+      
 
 
     }
