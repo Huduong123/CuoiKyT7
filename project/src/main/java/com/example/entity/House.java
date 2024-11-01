@@ -33,4 +33,12 @@ public class House extends  RealEstate {
             return dienTich * donGia * 0.9;
         }
     }
+
+    public void setLoaiNha(String loaiNha) {
+        this.loaiNha = loaiNha;
+    }
+
+    public void setDiaChi(String diaChi) {
+        this.diaChi = diaChi;
+    }
 }

@@ -17,6 +17,18 @@ public abstract  class RealEstate {
         this.dienTich = dienTich;
     }
 
+    public RealEstate(int maGiaoDich) {
+        this.maGiaoDich = maGiaoDich;
+    }
+
+    public RealEstate(Date ngayGiaoDich) {
+        this.ngayGiaoDich = ngayGiaoDich;
+    }
+
+    public RealEstate(String loaiGiaoDich) {
+        this.loaiGiaoDich = loaiGiaoDich;
+    }
+
     
 
 
@@ -45,6 +57,22 @@ public abstract  class RealEstate {
 
     public void setMaGiaoDich(int maGiaoDich) {
         this.maGiaoDich = maGiaoDich;
+    }
+
+    public void setNgayGiaoDich(Date ngayGiaoDich) {
+        this.ngayGiaoDich = ngayGiaoDich;
+    }
+
+    public void setLoaiGiaoDich(String loaiGiaoDich) {
+        this.loaiGiaoDich = loaiGiaoDich;
+    }
+
+    public void setDonGia(double donGia) {
+        this.donGia = donGia;
+    }
+
+    public void setDienTich(double dienTich) {
+        this.dienTich = dienTich;
     }
 
     public abstract double thanhTien();    

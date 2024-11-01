@@ -57,6 +57,13 @@ public class AddTransactionPresenter implements AddTransactionOutput {
         return resError;
     }
 
+    public ResponseData getResData() {
+        return resData;
+    }
+
+
+
+
     @Override
     public void outResult(ResponseData success) {
         this.resData = success;

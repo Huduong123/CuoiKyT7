@@ -27,4 +27,8 @@ public class Land extends  RealEstate {
             return dienTich * donGia;
         }
     }
+
+    public void setLoaiDat(String loaiDat) {
+        this.loaiDat = loaiDat;
+    }
 }

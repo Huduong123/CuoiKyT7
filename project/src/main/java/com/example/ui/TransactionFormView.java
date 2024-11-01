@@ -34,6 +34,7 @@ import com.example.ui.edit_transaction.EditTransactionController;
 import com.example.ui.edit_transaction.EditTransactionViewModel;
 import com.example.ui.get_listTransaction.GetListTransactionController;
 import com.example.ui.get_listTransaction.GetListTransactionViewModel;
+import com.example.ui.search_transaction.SearchTransactionView;
 
 public class TransactionFormView extends JFrame implements ActionListener {
     private JComboBox<String> cboTransactionType;
@@ -48,7 +49,8 @@ public class TransactionFormView extends JFrame implements ActionListener {
 
     //view 
     private AddTransactionDetailForm addTransactionDetailForm = null;
-
+    private SearchTransactionView searchTransactionView = null;
+    
     // view model
     private List<GetListTransactionViewModel> transactions = null;
     private GetListTransactionViewModel viewModel = null;
@@ -63,6 +65,10 @@ public class TransactionFormView extends JFrame implements ActionListener {
 
     public void setAddTransactionDetailForm(AddTransactionDetailForm addTransactionDetailForm) {
         this.addTransactionDetailForm = addTransactionDetailForm;
+    }
+
+    public void setSearchTransactionView(SearchTransactionView searchTransactionView) {
+        this.searchTransactionView = searchTransactionView;
     }
 
     public TransactionFormView() {
@@ -290,6 +296,8 @@ public class TransactionFormView extends JFrame implements ActionListener {
             
         });
 
+        
+        btnSearch.addActionListener(this);
 
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -347,6 +355,8 @@ public class TransactionFormView extends JFrame implements ActionListener {
             btnDeleteTransaction.setEnabled(false);
         });
     }
+
+
 
     //load bảng
     public void getListTransactionFormView(List<GetListTransactionViewModel> transactions) {
@@ -512,13 +522,11 @@ public class TransactionFormView extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String command = e.getActionCommand();
-        if (command.equals("Thêm hóa đơn")) {
-            /*
-             * if (addTransactionView != null) {
-             * addTransactionView.show();
-             * }
-             */
+        if (e.getSource() == btnSearch) {
+            if (searchTransactionView != null) {
+                this.setVisible(false); // Ẩn TransactionFormView
+                searchTransactionView.setVisible(true); // Hiển thị SearchTransactionView
+            }
         }
     }
 

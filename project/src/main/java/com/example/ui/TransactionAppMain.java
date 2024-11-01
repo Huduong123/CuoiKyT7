@@ -4,6 +4,7 @@ import com.example.database.Main.AddTransactionDAOMySQL;
 import com.example.database.Main.DeleteTransactionDAOMySQL;
 import com.example.database.Main.EditTransactionDAOMySQL;
 import com.example.database.Main.GetListTransactionDAOMySQL;
+import com.example.database.Main.SearchTransactionDAOMySQL;
 import com.example.ui.add_transaction.AddTransactionController;
 import com.example.ui.add_transaction.AddTransactionPresenter;
 import com.example.ui.add_transaction.AddTransactionViewModel;
@@ -15,10 +16,14 @@ import com.example.ui.edit_transaction.EditTransactionPresenter;
 import com.example.ui.edit_transaction.EditTransactionViewModel;
 import com.example.ui.get_listTransaction.GetListTransactionController;
 import com.example.ui.get_listTransaction.GetListTransactionPresenter;
+import com.example.ui.search_transaction.SearchTransactionController;
+import com.example.ui.search_transaction.SearchTransactionPresenter;
+import com.example.ui.search_transaction.SearchTransactionView;
 import com.example.usecase.AddTransaction.AddTransactionUsecase;
 import com.example.usecase.DeleteTransaction.DeleteTransactionUseCase;
 import com.example.usecase.EditTransaction.EditTransactionUseCase;
 import com.example.usecase.GetListTransaction.GetListTransactionUseCase;
+import com.example.usecase.SearchTransaction.SearchTransactionUseCase;
 
 public class TransactionAppMain {
 
@@ -53,15 +58,31 @@ public class TransactionAppMain {
     DeleteTransactionUseCase deleteTransactionUseCase = new DeleteTransactionUseCase(deleteTransactionPresenter, deleteTransactionDAOMySQL);
     DeleteTransactionController deleteTransactionController = new DeleteTransactionController(deleteTransactionUseCase);
 
+
+    SearchTransactionView searchTransactionView = new SearchTransactionView();
+   
+    SearchTransactionPresenter searchTransactionPresenter =   new SearchTransactionPresenter(searchTransactionView);
+    SearchTransactionDAOMySQL searchTransactionDAOMySQL = new SearchTransactionDAOMySQL();
+    SearchTransactionUseCase searchTransactionUseCase = new SearchTransactionUseCase(searchTransactionDAOMySQL, searchTransactionPresenter);
+    SearchTransactionController searchTransactionController = new SearchTransactionController(searchTransactionUseCase);
+
+
+    formMain.setSearchTransactionView(searchTransactionView);
+
     formMain.setGetListTransactionController(getListTransactionController);
     formMain.setAddTransactionController(addTransactionController);
     formMain.setEditTransactionController(editTransactionController);
     formMain.setDeleteTransactionController(deleteTransactionController);
+    
+
 
     formMain.setAddViewModel(addViewModel);
     formMain.setEditViewModel(editViewModel);
     formMain.setDeleteViewModel(deleteViewModel);
     formMain.setVisible(true);
+
+    searchTransactionView.setSearchTransactionController(searchTransactionController);
+  
     getListTransactionController.execute();
 
   }

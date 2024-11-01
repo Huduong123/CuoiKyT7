@@ -27,6 +27,8 @@ public class DeleteTransactionPresenter implements DeleteTransactionOutput{
     }
 
 
+  
+
     public ResponseError getResError() {
         return resError;
     }
