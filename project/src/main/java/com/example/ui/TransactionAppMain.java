@@ -1,6 +1,7 @@
 package com.example.ui;
 
 import com.example.database.Main.AddTransactionDAOMySQL;
+import com.example.database.Main.CalTotalTransactionDAOMySQL;
 import com.example.database.Main.DeleteTransactionDAOMySQL;
 import com.example.database.Main.EditTransactionDAOMySQL;
 import com.example.database.Main.GetListTransactionDAOMySQL;
@@ -8,6 +9,8 @@ import com.example.database.Main.SearchTransactionDAOMySQL;
 import com.example.ui.add_transaction.AddTransactionController;
 import com.example.ui.add_transaction.AddTransactionPresenter;
 import com.example.ui.add_transaction.AddTransactionViewModel;
+import com.example.ui.calTotal_transaction.CalTotalTransactionController;
+import com.example.ui.calTotal_transaction.CalTotalTransactionPresenter;
 import com.example.ui.delete_transaction.DeleteTransactionController;
 import com.example.ui.delete_transaction.DeleteTransactionPresenter;
 import com.example.ui.delete_transaction.DeleteTransactionViewModel;
@@ -20,6 +23,7 @@ import com.example.ui.search_transaction.SearchTransactionController;
 import com.example.ui.search_transaction.SearchTransactionPresenter;
 import com.example.ui.search_transaction.SearchTransactionView;
 import com.example.usecase.AddTransaction.AddTransactionUsecase;
+import com.example.usecase.CalTotalTransaction.CalTotalTransactionUseCase;
 import com.example.usecase.DeleteTransaction.DeleteTransactionUseCase;
 import com.example.usecase.EditTransaction.EditTransactionUseCase;
 import com.example.usecase.GetListTransaction.GetListTransactionUseCase;
@@ -66,6 +70,10 @@ public class TransactionAppMain {
     SearchTransactionUseCase searchTransactionUseCase = new SearchTransactionUseCase(searchTransactionDAOMySQL, searchTransactionPresenter);
     SearchTransactionController searchTransactionController = new SearchTransactionController(searchTransactionUseCase);
 
+    CalTotalTransactionPresenter calTotalTransactionPresenter = new CalTotalTransactionPresenter();
+    CalTotalTransactionDAOMySQL calTotalTransactionDAOMySQL = new CalTotalTransactionDAOMySQL();
+    CalTotalTransactionUseCase calTotalTransactionUseCase = new CalTotalTransactionUseCase(calTotalTransactionDAOMySQL, calTotalTransactionPresenter);
+    CalTotalTransactionController calTotalTransactionController = new CalTotalTransactionController(calTotalTransactionUseCase);
 
     formMain.setSearchTransactionView(searchTransactionView);
 
@@ -73,15 +81,17 @@ public class TransactionAppMain {
     formMain.setAddTransactionController(addTransactionController);
     formMain.setEditTransactionController(editTransactionController);
     formMain.setDeleteTransactionController(deleteTransactionController);
-    
+    searchTransactionView.setSearchTransactionController(searchTransactionController);
+    formMain.setCalTotalController(calTotalTransactionController);
 
 
     formMain.setAddViewModel(addViewModel);
     formMain.setEditViewModel(editViewModel);
     formMain.setDeleteViewModel(deleteViewModel);
+    formMain.setCalTotalViewModel(null);
     formMain.setVisible(true);
 
-    searchTransactionView.setSearchTransactionController(searchTransactionController);
+    
   
     getListTransactionController.execute();
 

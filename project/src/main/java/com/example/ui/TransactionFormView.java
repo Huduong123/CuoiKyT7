@@ -28,6 +28,8 @@ import javax.swing.table.DefaultTableModel;
 import com.example.ui.add_transaction.AddTransactionController;
 import com.example.ui.add_transaction.AddTransactionDetailForm;
 import com.example.ui.add_transaction.AddTransactionViewModel;
+import com.example.ui.calTotal_transaction.CalTotalTransactionController;
+import com.example.ui.calTotal_transaction.CalTotalTransactionViewModel;
 import com.example.ui.delete_transaction.DeleteTransactionController;
 import com.example.ui.delete_transaction.DeleteTransactionViewModel;
 import com.example.ui.edit_transaction.EditTransactionController;
@@ -57,11 +59,14 @@ public class TransactionFormView extends JFrame implements ActionListener {
     private AddTransactionViewModel addViewModel = null;
     private EditTransactionViewModel editViewModel = null;
     private DeleteTransactionViewModel deleteViewModel = null;
+    private CalTotalTransactionViewModel calTotalViewModel = null;
+
     // controller
     private GetListTransactionController getListTransactionController = null;
     private AddTransactionController addTransactionController = null;
     private EditTransactionController editTransactionController = null;
     private DeleteTransactionController deleteTransactionController = null;
+    private CalTotalTransactionController calTotalController = null;
 
     public void setAddTransactionDetailForm(AddTransactionDetailForm addTransactionDetailForm) {
         this.addTransactionDetailForm = addTransactionDetailForm;
@@ -299,6 +304,17 @@ public class TransactionFormView extends JFrame implements ActionListener {
         
         btnSearch.addActionListener(this);
 
+        btnSumQuantity.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calTotalController.execute();
+            }
+        });
+
+
+
+        
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -549,6 +565,13 @@ public class TransactionFormView extends JFrame implements ActionListener {
     this.deleteTransactionController = deleteTransactionController;
 }
 
+
+
+
+    public void setCalTotalController(CalTotalTransactionController calTotalController) {
+        this.calTotalController = calTotalController;
+    }
+
     //set ViewModel
     public void setAddViewModel(AddTransactionViewModel addViewModel) {
         this.addViewModel = addViewModel;
@@ -560,6 +583,11 @@ public class TransactionFormView extends JFrame implements ActionListener {
 
     public void setDeleteViewModel(DeleteTransactionViewModel deleteViewModel) {
         this.deleteViewModel = deleteViewModel;
+    }
+
+    
+    public void setCalTotalViewModel(CalTotalTransactionViewModel calTotalViewModel) {
+        this.calTotalViewModel = calTotalViewModel;
     }
 
     // phương thức báo lỗi
@@ -588,7 +616,8 @@ public class TransactionFormView extends JFrame implements ActionListener {
             deleteViewModel.setMessageError(null); // Reset lỗi sau khi hiển thị
         }   
     }
-   
+
+    
     private boolean isNumeric(String str) {
         if (str == null || str.isEmpty()) {
             return false;
