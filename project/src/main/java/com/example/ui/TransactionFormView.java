@@ -28,6 +28,8 @@ import javax.swing.table.DefaultTableModel;
 import com.example.ui.add_transaction.AddTransactionController;
 import com.example.ui.add_transaction.AddTransactionDetailForm;
 import com.example.ui.add_transaction.AddTransactionViewModel;
+import com.example.ui.calAverage_transaction.CalAverageTranController;
+import com.example.ui.calAverage_transaction.CalAverageTranViewModel;
 import com.example.ui.calTotal_transaction.CalTotalTransactionController;
 import com.example.ui.calTotal_transaction.CalTotalTransactionViewModel;
 import com.example.ui.delete_transaction.DeleteTransactionController;
@@ -60,13 +62,14 @@ public class TransactionFormView extends JFrame implements ActionListener {
     private EditTransactionViewModel editViewModel = null;
     private DeleteTransactionViewModel deleteViewModel = null;
     private CalTotalTransactionViewModel calTotalViewModel = null;
-
+    private CalAverageTranViewModel calAverageTranViewModel = null;
     // controller
     private GetListTransactionController getListTransactionController = null;
     private AddTransactionController addTransactionController = null;
     private EditTransactionController editTransactionController = null;
     private DeleteTransactionController deleteTransactionController = null;
     private CalTotalTransactionController calTotalController = null;
+    private CalAverageTranController calAverageTranController = null;
 
     public void setAddTransactionDetailForm(AddTransactionDetailForm addTransactionDetailForm) {
         this.addTransactionDetailForm = addTransactionDetailForm;
@@ -312,7 +315,14 @@ public class TransactionFormView extends JFrame implements ActionListener {
             }
         });
 
+        btnAverage.addActionListener(new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               calAverageTranController.execute();
+            }
+            
+        });
 
         
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -572,6 +582,11 @@ public class TransactionFormView extends JFrame implements ActionListener {
         this.calTotalController = calTotalController;
     }
 
+    public void setCalAverageTranController(CalAverageTranController calAverageTranController) {
+        this.calAverageTranController = calAverageTranController;
+    }
+
+
     //set ViewModel
     public void setAddViewModel(AddTransactionViewModel addViewModel) {
         this.addViewModel = addViewModel;
@@ -590,6 +605,10 @@ public class TransactionFormView extends JFrame implements ActionListener {
         this.calTotalViewModel = calTotalViewModel;
     }
 
+    public void setCalAverageTranViewModel(CalAverageTranViewModel calAverageTranViewModel) {
+        this.calAverageTranViewModel = calAverageTranViewModel;
+    }
+    
     // phương thức báo lỗi
     public void showErrorMessageAdd() {
   
@@ -629,6 +648,9 @@ public class TransactionFormView extends JFrame implements ActionListener {
         }
         return true;
     }
+
+
+  
 
  
     

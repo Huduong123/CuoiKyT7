@@ -36,7 +36,7 @@ public class SearchTransactionDAOMySQL implements  SearchTransactionDatabase{
     
             while (rs.next()) {
                 String loaiGiaoDich = rs.getString("LOAI_GIAO_DICH");
-                if ("ĐẤT".equalsIgnoreCase(loaiGiaoDich)) {
+                if ("Đất".equalsIgnoreCase(loaiGiaoDich)) {
                     Land land = new Land(
                         rs.getInt("MAGD"),
                         rs.getDate("NGAY_GIAO_DICH"),
@@ -46,7 +46,7 @@ public class SearchTransactionDAOMySQL implements  SearchTransactionDatabase{
                         rs.getString("LOAI_DAT")
                     );
                     realEstateList.add(land);
-                } else if ("NHÀ".equalsIgnoreCase(loaiGiaoDich)) {
+                } else if ("Nhà".equalsIgnoreCase(loaiGiaoDich)) {
                     House house = new House(
                         rs.getInt("MAGD"),
                         rs.getDate("NGAY_GIAO_DICH"),

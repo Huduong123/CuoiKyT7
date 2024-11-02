@@ -32,7 +32,7 @@ public class GetListTransactionDAOMySQL implements  GetListTransactionDatabase{
                 int maGiaoDich = rs.getInt("MAGD"); // Lấy mã giao dịch
                 String loaiGiaoDich = rs.getString("LOAI_GIAO_DICH");
                 // Check if the transaction is for land or house
-                if ("ĐẤT".equalsIgnoreCase(loaiGiaoDich)) {
+                if ("Đất".equalsIgnoreCase(loaiGiaoDich)) {
                     Land land = new Land(
                         rs.getInt("MAGD"),
                             rs.getDate("NGAY_GIAO_DICH"),
@@ -43,7 +43,7 @@ public class GetListTransactionDAOMySQL implements  GetListTransactionDatabase{
                     );
                     land.setMaGiaoDich(maGiaoDich); // Set mã giao dịch vào đối tượng Land
                     realEstates.add(land);
-                } else if ("NHÀ".equalsIgnoreCase(loaiGiaoDich)) {
+                } else if ("Nhà".equalsIgnoreCase(loaiGiaoDich)) {
                     House house = new House(
                         rs.getInt("MAGD"),
                             rs.getDate("NGAY_GIAO_DICH"),

@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: com.example.transaction_app.test_calAverage.CalAverageTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 4.153 s <<< FAILURE! - in com.example.transaction_app.test_calAverage.CalAverageTest
+TestCalAverageLand(com.example.transaction_app.test_calAverage.CalAverageTest)  Time elapsed: 4.128 s  <<< FAILURE!
+java.lang.AssertionError: Giá trị trung bình được tính toán phải khớp với giá trị mong đợ expected:<2500.0> but was:<45666.666666666664>
+	at com.example.transaction_app.test_calAverage.CalAverageTest.TestCalAverageLand(CalAverageTest.java:27)
+
