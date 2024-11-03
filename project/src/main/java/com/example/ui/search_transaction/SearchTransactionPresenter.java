@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import com.example.ui.TransactionFormView;
 import com.example.usecase.ResponseData;
 import com.example.usecase.ResponseError;
 import com.example.usecase.SearchTransaction.SearchTransactionOutput;
@@ -16,10 +17,11 @@ public class SearchTransactionPresenter implements SearchTransactionOutput {
     private List<SearchTransactionViewModel> listViewModel = null;
     private ResponseError resError = null;
     private ResponseData resData = null;
-    private SearchTransactionView searchView;
+    private TransactionFormView formView = null;
 
-    public SearchTransactionPresenter(SearchTransactionView searchView) {
-        this.searchView = searchView;
+ 
+    public SearchTransactionPresenter(TransactionFormView formView) {
+        this.formView = formView;
     }
 
     @Override
@@ -76,8 +78,7 @@ public class SearchTransactionPresenter implements SearchTransactionOutput {
 
         }
 
-        // Cập nhật danh sách ViewModel cho view
-        searchView.searchTransactionList(viewModelList);
+      formView.searchTransactionList(viewModelList);
     }
 
     public List<SearchTransactionViewModel> getListViewModel() {
@@ -92,9 +93,7 @@ public class SearchTransactionPresenter implements SearchTransactionOutput {
         return resData;
     }
 
-    public SearchTransactionView getSearchView() {
-        return searchView;
-    }
+ 
 
     public List<SearchTransactionOutputDTO> getListOutputDTO() {
         return listOutputDTO;

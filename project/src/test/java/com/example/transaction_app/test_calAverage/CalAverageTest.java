@@ -24,6 +24,6 @@ public class CalAverageTest {
 
 
         double expectedAverage = 45666.666666666664; // Replace with expected value based on known data in the database
-        assertEquals("Giá trị trung bình được tính toán phải khớp với giá trị mong đợ", expectedAverage, calOutputDTO.getCalAverage(), 0.001);
+        assertEquals("Giá trị trung bình được tính toán phải khớp với giá trị mong đợi", expectedAverage, calOutputDTO.getCalAverage(), 0.001);
     }
 }

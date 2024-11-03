@@ -2,6 +2,7 @@ package com.example.usecase;
 
 import java.util.List;
 
+import com.example.usecase.ExportTransaction.ExportTransactionOutputDTO;
 import com.example.usecase.SearchTransaction.SearchTransactionOutputDTO;
 
 public class ResponseData {
@@ -10,7 +11,7 @@ public class ResponseData {
     public double result;   
 public int resultDelelte;
  public  List<SearchTransactionOutputDTO> dataList;
- 
+ public List<ExportTransactionOutputDTO> dataExportList;
     public String getMessage() {
         return message;
     }
@@ -41,6 +42,14 @@ public int resultDelelte;
 
     public void setDataList(List<SearchTransactionOutputDTO> dataList) {
         this.dataList = dataList;
+    }
+
+    public List<ExportTransactionOutputDTO> getDataExportList() {
+        return dataExportList;
+    }
+
+    public void setDataExportList(List<ExportTransactionOutputDTO> dataExportList) {
+        this.dataExportList = dataExportList;
     }
 
 }

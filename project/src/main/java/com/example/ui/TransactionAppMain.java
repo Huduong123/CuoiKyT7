@@ -24,7 +24,6 @@ import com.example.ui.get_listTransaction.GetListTransactionController;
 import com.example.ui.get_listTransaction.GetListTransactionPresenter;
 import com.example.ui.search_transaction.SearchTransactionController;
 import com.example.ui.search_transaction.SearchTransactionPresenter;
-import com.example.ui.search_transaction.SearchTransactionView;
 import com.example.usecase.AddTransaction.AddTransactionUsecase;
 import com.example.usecase.CalAverageTransaction.CalAverageTransactionUseCase;
 import com.example.usecase.CalTotalTransaction.CalTotalTransactionUseCase;
@@ -67,9 +66,9 @@ public class TransactionAppMain {
     DeleteTransactionController deleteTransactionController = new DeleteTransactionController(deleteTransactionUseCase);
 
 
-    SearchTransactionView searchTransactionView = new SearchTransactionView();
+
    
-    SearchTransactionPresenter searchTransactionPresenter =   new SearchTransactionPresenter(searchTransactionView);
+    SearchTransactionPresenter searchTransactionPresenter =   new SearchTransactionPresenter(formMain);
     SearchTransactionDAOMySQL searchTransactionDAOMySQL = new SearchTransactionDAOMySQL();
     SearchTransactionUseCase searchTransactionUseCase = new SearchTransactionUseCase(searchTransactionDAOMySQL, searchTransactionPresenter);
     SearchTransactionController searchTransactionController = new SearchTransactionController(searchTransactionUseCase);
@@ -84,13 +83,13 @@ public class TransactionAppMain {
     CalAverageTransactionUseCase calAverageTransactionUseCase = new CalAverageTransactionUseCase(calAverageTranPresenter, calAverageTransactionDAOMySQL);
     CalAverageTranController calAverageTranController = new CalAverageTranController(calAverageTransactionUseCase);
 
-    formMain.setSearchTransactionView(searchTransactionView);
+
 
     formMain.setGetListTransactionController(getListTransactionController);
     formMain.setAddTransactionController(addTransactionController);
     formMain.setEditTransactionController(editTransactionController);
     formMain.setDeleteTransactionController(deleteTransactionController);
-    searchTransactionView.setSearchTransactionController(searchTransactionController);
+    formMain.setSearchTransactionController(searchTransactionController);
     formMain.setCalTotalController(calTotalTransactionController);
     formMain.setCalAverageTranController(calAverageTranController);
 
@@ -98,7 +97,7 @@ public class TransactionAppMain {
     formMain.setEditViewModel(editViewModel);
     formMain.setDeleteViewModel(deleteViewModel);
     formMain.setCalTotalViewModel(null);
-   
+
     formMain.setVisible(true);
 
     

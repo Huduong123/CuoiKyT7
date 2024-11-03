@@ -38,14 +38,15 @@ import com.example.ui.edit_transaction.EditTransactionController;
 import com.example.ui.edit_transaction.EditTransactionViewModel;
 import com.example.ui.get_listTransaction.GetListTransactionController;
 import com.example.ui.get_listTransaction.GetListTransactionViewModel;
-import com.example.ui.search_transaction.SearchTransactionView;
+import com.example.ui.search_transaction.SearchTransactionController;
+import com.example.ui.search_transaction.SearchTransactionViewModel;
 
 public class TransactionFormView extends JFrame implements ActionListener {
     private JComboBox<String> cboTransactionType;
     private JComboBox<String> cboLandType;
     private JComboBox<String> cboHouseType;
     private JTextField txtSearch;
-    private JTextField txtTransactionCode, txtUnitPrice, txtArea, txtAddress, txtTransactionDate;
+    private JTextField txtTransactionCode, txtUnitPrice, txtArea, txtAddress, txtTransactionDate, maHoaDonTimKiem;
     private JButton btnReset, btnAddTransaction, btnEditTransaction, btnDeleteTransaction, btnSumQuantity,
             btnAverage, btnPrint, btnSearch;
     private DefaultTableModel transactionTable;
@@ -53,7 +54,7 @@ public class TransactionFormView extends JFrame implements ActionListener {
 
     //view 
     private AddTransactionDetailForm addTransactionDetailForm = null;
-    private SearchTransactionView searchTransactionView = null;
+  
     
     // view model
     private List<GetListTransactionViewModel> transactions = null;
@@ -61,6 +62,7 @@ public class TransactionFormView extends JFrame implements ActionListener {
     private AddTransactionViewModel addViewModel = null;
     private EditTransactionViewModel editViewModel = null;
     private DeleteTransactionViewModel deleteViewModel = null;
+    private List<SearchTransactionViewModel> listSearchTranViewModel = null;
     private CalTotalTransactionViewModel calTotalViewModel = null;
     private CalAverageTranViewModel calAverageTranViewModel = null;
     // controller
@@ -68,6 +70,7 @@ public class TransactionFormView extends JFrame implements ActionListener {
     private AddTransactionController addTransactionController = null;
     private EditTransactionController editTransactionController = null;
     private DeleteTransactionController deleteTransactionController = null;
+    private SearchTransactionController searchTransactionController = null;
     private CalTotalTransactionController calTotalController = null;
     private CalAverageTranController calAverageTranController = null;
 
@@ -75,13 +78,11 @@ public class TransactionFormView extends JFrame implements ActionListener {
         this.addTransactionDetailForm = addTransactionDetailForm;
     }
 
-    public void setSearchTransactionView(SearchTransactionView searchTransactionView) {
-        this.searchTransactionView = searchTransactionView;
-    }
+
 
     public TransactionFormView() {
         setTitle("Quản Lí ");
-        setSize(900, 600);
+        setSize(900, 700);
         setLocationRelativeTo(null); // Đặt JFrame ở giữa màn hình
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
@@ -94,12 +95,12 @@ public class TransactionFormView extends JFrame implements ActionListener {
         JLabel lblAddress = new JLabel("Địa Chỉ:");
         // JLabel lblTotalPrice = new JLabel("Thành Tiền:");
         JLabel lblTransactionType = new JLabel("Loại Giao Dịch:");
-
+        JLabel lbTimKiem = new JLabel("Tìm kiếm");
         txtTransactionCode = new JTextField(20);
         txtUnitPrice = new JTextField(20);
         txtArea = new JTextField(20);
         txtAddress = new JTextField(20);
-  
+        maHoaDonTimKiem = new JTextField(20);
 
         txtTransactionDate = new JTextField(20);
         txtTransactionDate.setToolTipText("Nhập ngày theo định dạng dd/MM/yyyy");
@@ -193,7 +194,13 @@ public class TransactionFormView extends JFrame implements ActionListener {
         gbc.gridx = 1;
         add(cboHouseType, gbc);
 
-
+      // Add search label and text field on a new row below the comboboxes
+      gbc.gridx = 0;
+      gbc.gridy = 9;
+      add(lbTimKiem, gbc);
+      gbc.gridx = 1;
+      add(maHoaDonTimKiem, gbc);
+      
         gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.weightx = 0;
@@ -205,16 +212,18 @@ public class TransactionFormView extends JFrame implements ActionListener {
         add(btnAverage, gbc);
         gbc.gridy = 5;
         add(btnPrint, gbc);
-        gbc.gridy = 6;
+        gbc.gridy = 9;
         add(btnSearch, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 9;
-        add(btnAddTransaction, gbc);
-        gbc.gridx = 1;
-        add(btnEditTransaction, gbc);
-        gbc.gridx = 2;
-        add(btnDeleteTransaction, gbc);
+           // Add transaction buttons on a new row
+           gbc.gridx = 0;
+           gbc.gridy = 10;
+           gbc.gridwidth = 1;
+           add(btnAddTransaction, gbc);
+           gbc.gridx = 1;
+           add(btnEditTransaction, gbc);
+           gbc.gridx = 2;
+           add(btnDeleteTransaction, gbc);
 
         setVisible(true);
 
@@ -305,7 +314,14 @@ public class TransactionFormView extends JFrame implements ActionListener {
         });
 
         
-        btnSearch.addActionListener(this);
+        btnSearch.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleSearch();
+            }
+            
+        });
 
         btnSumQuantity.addActionListener(new ActionListener() {
 
@@ -510,6 +526,44 @@ public class TransactionFormView extends JFrame implements ActionListener {
         resetForm();
     }
 
+    public void handleSearch(){
+        String maGiaoDich = maHoaDonTimKiem.getText().trim();
+        if (maGiaoDich.isEmpty()) {
+            displayError("Mã giao dịch không được để trống");
+            return;
+        }
+
+        searchTransactionController.getMaGiaoDich(maGiaoDich);
+
+        // Hiển thị danh sách sau khi tìm kiếm
+        searchTransactionList(listSearchTranViewModel);
+   
+    }
+    public void searchTransactionList(List<SearchTransactionViewModel> transactions) {
+        // Nếu danh sách truyền vào là null hoặc rỗng, xóa hết các hàng trong bảng và trả về ngay lập tức
+        if (transactions == null || transactions.isEmpty()) {
+            transactionTable.setRowCount(0);
+            return;
+        }
+    
+        this.listSearchTranViewModel = transactions;
+        transactionTable.setRowCount(0); // Xóa dữ liệu cũ trước khi thêm dữ liệu mới
+        
+        // Thêm dữ liệu mới vào bảng
+        for (SearchTransactionViewModel transaction : transactions) {
+            Object[] row = {
+                    transaction.maGiaoDich,
+                    transaction.ngayGiaoDich,
+                    transaction.donGia,
+                    transaction.dienTich,
+                    transaction.diaChi,
+                    transaction.loaiGiaoDich,
+                    transaction.loaiDat != null ? transaction.loaiDat : transaction.loaiNha,
+                    transaction.thanhTien
+            };
+            transactionTable.addRow(row);
+        }
+    }
     private boolean validateInputFields() {
         if (txtTransactionCode.getText().trim().isEmpty()) {
             showError("Vui lòng nhập Mã Giao Dịch.", txtTransactionCode);
@@ -544,16 +598,12 @@ public class TransactionFormView extends JFrame implements ActionListener {
         txtAddress.setText("");
         txtArea.setText("");
         txtTransactionCode.setEnabled(true);
+        getListTransactionFormView(transactions);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnSearch) {
-            if (searchTransactionView != null) {
-                this.setVisible(false); // Ẩn TransactionFormView
-                searchTransactionView.setVisible(true); // Hiển thị SearchTransactionView
-            }
-        }
+       
     }
 
     //set Controller
@@ -576,6 +626,9 @@ public class TransactionFormView extends JFrame implements ActionListener {
 }
 
 
+public void setSearchTransactionController(SearchTransactionController searchTransactionController) {
+    this.searchTransactionController = searchTransactionController;
+}
 
 
     public void setCalTotalController(CalTotalTransactionController calTotalController) {
@@ -652,6 +705,8 @@ public class TransactionFormView extends JFrame implements ActionListener {
 
   
 
- 
+    public void displayError(String errorMessage) {
+        JOptionPane.showMessageDialog(null,  errorMessage, "Lỗi", JOptionPane.ERROR_MESSAGE);
+    }
     
 }

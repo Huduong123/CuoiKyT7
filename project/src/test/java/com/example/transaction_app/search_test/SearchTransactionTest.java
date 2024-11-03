@@ -8,7 +8,6 @@ import org.junit.Test;
 import com.example.database.Main.SearchTransactionDAOMySQL;
 import com.example.ui.TransactionFormView;
 import com.example.ui.search_transaction.SearchTransactionPresenter;
-import com.example.ui.search_transaction.SearchTransactionView;
 import com.example.usecase.ResponseError;
 import com.example.usecase.SearchTransaction.SearchTransactionInput;
 import com.example.usecase.SearchTransaction.SearchTransactionInputDTO;
@@ -20,8 +19,8 @@ public class SearchTransactionTest {
     @Test
     public void testSearchTransaction() {
 
-        SearchTransactionView searchTransactionView = new SearchTransactionView();
-        SearchTransactionPresenter searchTransactionPresenter = new SearchTransactionPresenter(searchTransactionView);
+        TransactionFormView transactionFormView = new TransactionFormView();
+        SearchTransactionPresenter searchTransactionPresenter = new SearchTransactionPresenter(transactionFormView);
         SearchTransactionDAOMySQL searchTransactionDAOMySQL = new SearchTransactionDAOMySQL();
 
         SearchTransactionInput searchTransactionInput = new SearchTransactionUseCase(searchTransactionDAOMySQL,
@@ -38,8 +37,8 @@ public class SearchTransactionTest {
  // Test kiểm tra lỗi khi nhập mã giao dịch không tồn tại
     @Test
     public void testSearchTransactionWithInvalidID() {
-        SearchTransactionView searchTransactionView = new SearchTransactionView();
-        SearchTransactionPresenter searchTransactionPresenter = new SearchTransactionPresenter(searchTransactionView);
+        TransactionFormView transactionFormView = new TransactionFormView();
+        SearchTransactionPresenter searchTransactionPresenter = new SearchTransactionPresenter(transactionFormView);
         SearchTransactionDAOMySQL searchTransactionDAOMySQL = new SearchTransactionDAOMySQL();
 
         SearchTransactionInput searchTransactionInput = new SearchTransactionUseCase(searchTransactionDAOMySQL,
