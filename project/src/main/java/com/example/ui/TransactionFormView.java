@@ -36,19 +36,21 @@ import com.example.ui.delete_transaction.DeleteTransactionController;
 import com.example.ui.delete_transaction.DeleteTransactionViewModel;
 import com.example.ui.edit_transaction.EditTransactionController;
 import com.example.ui.edit_transaction.EditTransactionViewModel;
+import com.example.ui.export_transaction.ExportTransactionController;
+import com.example.ui.export_transaction.ExportTransactionViewModel;
 import com.example.ui.get_listTransaction.GetListTransactionController;
 import com.example.ui.get_listTransaction.GetListTransactionViewModel;
 import com.example.ui.search_transaction.SearchTransactionController;
 import com.example.ui.search_transaction.SearchTransactionViewModel;
 
 public class TransactionFormView extends JFrame implements ActionListener {
-    private JComboBox<String> cboTransactionType;
+    private JComboBox<String> cboTransactionType, cboExportMonth;
     private JComboBox<String> cboLandType;
     private JComboBox<String> cboHouseType;
     private JTextField txtSearch;
     private JTextField txtTransactionCode, txtUnitPrice, txtArea, txtAddress, txtTransactionDate, maHoaDonTimKiem;
     private JButton btnReset, btnAddTransaction, btnEditTransaction, btnDeleteTransaction, btnSumQuantity,
-            btnAverage, btnPrint, btnSearch;
+            btnAverage, btnPrint, btnSearch, btnExport;
     private DefaultTableModel transactionTable;
     private boolean isTableChanged = false; // Cờ để kiểm tra thay đổi dữ liệu bảng
 
@@ -65,6 +67,7 @@ public class TransactionFormView extends JFrame implements ActionListener {
     private List<SearchTransactionViewModel> listSearchTranViewModel = null;
     private CalTotalTransactionViewModel calTotalViewModel = null;
     private CalAverageTranViewModel calAverageTranViewModel = null;
+    private List<ExportTransactionViewModel> listExportViewModel = null;
     // controller
     private GetListTransactionController getListTransactionController = null;
     private AddTransactionController addTransactionController = null;
@@ -73,10 +76,13 @@ public class TransactionFormView extends JFrame implements ActionListener {
     private SearchTransactionController searchTransactionController = null;
     private CalTotalTransactionController calTotalController = null;
     private CalAverageTranController calAverageTranController = null;
-
+    private ExportTransactionController exportTransactionController = null;
+    
     public void setAddTransactionDetailForm(AddTransactionDetailForm addTransactionDetailForm) {
         this.addTransactionDetailForm = addTransactionDetailForm;
     }
+
+
 
 
 
@@ -96,6 +102,7 @@ public class TransactionFormView extends JFrame implements ActionListener {
         // JLabel lblTotalPrice = new JLabel("Thành Tiền:");
         JLabel lblTransactionType = new JLabel("Loại Giao Dịch:");
         JLabel lbTimKiem = new JLabel("Tìm kiếm");
+        JLabel lbExport = new JLabel("Xuất hóa đơn theo tháng");
         txtTransactionCode = new JTextField(20);
         txtUnitPrice = new JTextField(20);
         txtArea = new JTextField(20);
@@ -109,6 +116,7 @@ public class TransactionFormView extends JFrame implements ActionListener {
         cboLandType = new JComboBox<>(new String[] { "Loại A", "Loại B", "Loại C" });
         cboHouseType = new JComboBox<>(new String[] { "Cao Cấp", "Nhà Thường" });
         cboHouseType.setEnabled(false);
+        cboExportMonth = new JComboBox<>(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9" , "10", "11", "12"});
 
         btnSearch = new JButton("Tìm Kiếm");
         btnReset = new JButton("Reset");
@@ -118,7 +126,7 @@ public class TransactionFormView extends JFrame implements ActionListener {
         btnSumQuantity = new JButton("Tính Tổng Số Lượng");
         btnAverage = new JButton("Tính Trung Bình");
         btnPrint = new JButton("In Giao Dịch");
-
+        btnExport = new JButton("Xuất hóa đơn");
         String[] columnNames = { "Mã Giao Dịch", "Ngày Giao Dịch", "Đơn Giá", "Diện Tích", "Địa Chỉ", "Loại Giao Dịch",
                 "Loại DV", "Thành Tiền" };
         transactionTable = new DefaultTableModel(columnNames, 0);
@@ -200,7 +208,13 @@ public class TransactionFormView extends JFrame implements ActionListener {
       add(lbTimKiem, gbc);
       gbc.gridx = 1;
       add(maHoaDonTimKiem, gbc);
-      
+
+      gbc.gridx = 0;
+      gbc.gridy = 10;
+      add(lbExport, gbc);
+      gbc.gridx = 1;
+      add(cboExportMonth, gbc);
+
         gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.weightx = 0;
@@ -214,10 +228,11 @@ public class TransactionFormView extends JFrame implements ActionListener {
         add(btnPrint, gbc);
         gbc.gridy = 9;
         add(btnSearch, gbc);
-
+        gbc.gridy = 10;
+        add(btnExport, gbc);
            // Add transaction buttons on a new row
            gbc.gridx = 0;
-           gbc.gridy = 10;
+           gbc.gridy = 11;
            gbc.gridwidth = 1;
            add(btnAddTransaction, gbc);
            gbc.gridx = 1;
@@ -323,6 +338,13 @@ public class TransactionFormView extends JFrame implements ActionListener {
             
         });
 
+        btnExport.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               handleExport();
+            }
+            
+        });
         btnSumQuantity.addActionListener(new ActionListener() {
 
             @Override
@@ -539,6 +561,15 @@ public class TransactionFormView extends JFrame implements ActionListener {
         searchTransactionList(listSearchTranViewModel);
    
     }
+
+    public void handleExport(){
+        String month = (String) cboExportMonth.getSelectedItem();
+
+        exportTransactionController.getMonth(month);
+
+        
+    }
+
     public void searchTransactionList(List<SearchTransactionViewModel> transactions) {
         // Nếu danh sách truyền vào là null hoặc rỗng, xóa hết các hàng trong bảng và trả về ngay lập tức
         if (transactions == null || transactions.isEmpty()) {
@@ -639,6 +670,10 @@ public void setSearchTransactionController(SearchTransactionController searchTra
         this.calAverageTranController = calAverageTranController;
     }
 
+
+    public void setExportTransactionController(ExportTransactionController exportTransactionController) {
+        this.exportTransactionController = exportTransactionController;
+    }
 
     //set ViewModel
     public void setAddViewModel(AddTransactionViewModel addViewModel) {

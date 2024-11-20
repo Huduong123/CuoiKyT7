@@ -77,7 +77,7 @@ public class SearchTransactionPresenter implements SearchTransactionOutput {
                     JOptionPane.INFORMATION_MESSAGE);
 
         }
-
+      
       formView.searchTransactionList(viewModelList);
     }
 

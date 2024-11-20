@@ -5,6 +5,7 @@ import com.example.database.Main.CalAverageTransactionDAOMySQL;
 import com.example.database.Main.CalTotalTransactionDAOMySQL;
 import com.example.database.Main.DeleteTransactionDAOMySQL;
 import com.example.database.Main.EditTransactionDAOMySQL;
+import com.example.database.Main.ExportTransactionDAOMySQL;
 import com.example.database.Main.GetListTransactionDAOMySQL;
 import com.example.database.Main.SearchTransactionDAOMySQL;
 import com.example.ui.add_transaction.AddTransactionController;
@@ -20,6 +21,8 @@ import com.example.ui.delete_transaction.DeleteTransactionViewModel;
 import com.example.ui.edit_transaction.EditTransactionController;
 import com.example.ui.edit_transaction.EditTransactionPresenter;
 import com.example.ui.edit_transaction.EditTransactionViewModel;
+import com.example.ui.export_transaction.ExportTransactionController;
+import com.example.ui.export_transaction.ExportTransactionPresenter;
 import com.example.ui.get_listTransaction.GetListTransactionController;
 import com.example.ui.get_listTransaction.GetListTransactionPresenter;
 import com.example.ui.search_transaction.SearchTransactionController;
@@ -29,6 +32,7 @@ import com.example.usecase.CalAverageTransaction.CalAverageTransactionUseCase;
 import com.example.usecase.CalTotalTransaction.CalTotalTransactionUseCase;
 import com.example.usecase.DeleteTransaction.DeleteTransactionUseCase;
 import com.example.usecase.EditTransaction.EditTransactionUseCase;
+import com.example.usecase.ExportTransaction.ExportTransactionUseCase;
 import com.example.usecase.GetListTransaction.GetListTransactionUseCase;
 import com.example.usecase.SearchTransaction.SearchTransactionUseCase;
 
@@ -83,7 +87,10 @@ public class TransactionAppMain {
     CalAverageTransactionUseCase calAverageTransactionUseCase = new CalAverageTransactionUseCase(calAverageTranPresenter, calAverageTransactionDAOMySQL);
     CalAverageTranController calAverageTranController = new CalAverageTranController(calAverageTransactionUseCase);
 
-
+    ExportTransactionPresenter exportTransactionPresenter = new ExportTransactionPresenter();
+    ExportTransactionDAOMySQL exportTransactionDAOMySQL = new ExportTransactionDAOMySQL();
+    ExportTransactionUseCase exportTransactionUseCase = new ExportTransactionUseCase(exportTransactionPresenter, exportTransactionDAOMySQL);
+    ExportTransactionController exportTransactionController = new ExportTransactionController(exportTransactionUseCase);
 
     formMain.setGetListTransactionController(getListTransactionController);
     formMain.setAddTransactionController(addTransactionController);
@@ -92,12 +99,14 @@ public class TransactionAppMain {
     formMain.setSearchTransactionController(searchTransactionController);
     formMain.setCalTotalController(calTotalTransactionController);
     formMain.setCalAverageTranController(calAverageTranController);
+    formMain.setExportTransactionController(exportTransactionController);
+
 
     formMain.setAddViewModel(addViewModel);
     formMain.setEditViewModel(editViewModel);
     formMain.setDeleteViewModel(deleteViewModel);
     formMain.setCalTotalViewModel(null);
-
+    
     formMain.setVisible(true);
 
     

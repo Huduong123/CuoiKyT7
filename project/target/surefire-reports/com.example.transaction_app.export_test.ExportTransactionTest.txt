@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: com.example.transaction_app.export_test.ExportTransactionTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 4.309 s <<< FAILURE! - in com.example.transaction_app.export_test.ExportTransactionTest
+testSearchTransaction(com.example.transaction_app.export_test.ExportTransactionTest)  Time elapsed: 4.292 s  <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "java.util.List.size()" because "listOutDTO" is null
+	at com.example.transaction_app.export_test.ExportTransactionTest.testSearchTransaction(ExportTransactionTest.java:27)
+
